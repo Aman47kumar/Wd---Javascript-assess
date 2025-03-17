@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Booking Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+
+    <h2 class="text-center">Restaurant Booking Form</h2>
+    
+    <form id="bookingForm" class="p-4 border rounded shadow">
+        <!-- Choice of Booking -->
+        <div class="mb-3">
+            <label for="bookingChoice" class="form-label">Choice of Booking</label>
+            <select id="bookingChoice" class="form-select">
+                <option value="">Select Booking Type</option>
+                <option value="full">Full Day Booking</option>
+                <option value="half">Half Day Booking</option>
+                <option value="hourly">Hourly Booking</option>
+            </select>
+        </div>
+
+        <!-- User Details -->
+        <div class="mb-3">
+            <label for="userName" class="form-label">User Name</label>
+            <input type="text" id="userName" class="form-control" placeholder="Enter your name">
+        </div>
+
+        <div class="mb-3">
+            <label for="mobileNumber" class="form-label">Mobile Number</label>
+            <input type="tel" id="mobileNumber" class="form-control" placeholder="Enter mobile number">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" placeholder="Enter email">
+        </div>
+
+        <div class="mb-3">
+            <label for="numPersons" class="form-label">Number of Persons</label>
+            <input type="number" id="numPersons" class="form-control" min="1" placeholder="Enter number of persons">
+        </div>
+
+        <!-- Dynamic Fields -->
+        <div id="dynamicFields"></div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Book Now</button>
+    </form>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const bookingChoice = document.getElementById("bookingChoice");
+    const dynamicFields = document.getElementById("dynamicFields");
+
+    // Function to clear fields
+    function clearFields() {
+        dynamicFields.innerHTML = "";
+    }
+
+    // Function to create new input elements dynamically
+    function createInput(type, id, label) {
+        const div = document.createElement("div");
+        div.classList.add("mb-3");
+
+        const lbl = document.createElement("label");
+        lbl.classList.add("form-label");
+        lbl.setAttribute("for", id);
+        lbl.textContent = label;
+
+        const input = document.createElement("input");
+        input.classList.add("form-control");
+        input.type = type;
+        input.id = id;
+
+        div.appendChild(lbl);
+        div.appendChild(input);
+        return div;
+    }
+
+    // Function to create slot dropdown
+    function createSlotDropdown() {
+        const div = document.createElement("div");
+        div.classList.add("mb-3");
+
+        const lbl = document.createElement("label");
+        lbl.classList.add("form-label");
+        lbl.textContent = "Select Slot";
+
+        const select = document.createElement("select");
+        select.classList.add("form-select");
+        select.id = "slot";
+        
+        const options = ["Breakfast", "Lunch", "Dinner"];
+        options.forEach(optionText => {
+            const option = document.createElement("option");
+            option.value = optionText.toLowerCase();
+            option.textContent = optionText;
+            select.appendChild(option);
+        });
+
+        div.appendChild(lbl);
+        div.appendChild(select);
+        return div;
+    }
+
+    // Event Listener for booking choice
+    bookingChoice.addEventListener("change", function () {
+        clearFields();
+
+        if (this.value === "full") {
+            dynamicFields.appendChild(createInput("date", "date", "Select Date"));
+        } else if (this.value === "half") {
+            dynamicFields.appendChild(createInput("date", "date", "Select Date"));
+            dynamicFields.appendChild(createSlotDropdown());
+        } else if (this.value === "hourly") {
+            dynamicFields.appendChild(createInput("date", "date", "Select Date"));
+            dynamicFields.appendChild(createInput("time", "time", "Select Time"));
+        }
+    });
+});
+
+</script>
+</html>
